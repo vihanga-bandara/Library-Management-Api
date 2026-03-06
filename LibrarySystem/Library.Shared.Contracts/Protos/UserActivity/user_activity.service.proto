@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package libary.useractivity.v1;
+
+option csharp_namespace = "Library.Shared.Contracts.UserActivity.V1";
+
+import "Protos/UserActivity/user_activity.message.proto";
+
+service UserActivityService {
+  rpc GetTopBorrowers (GetTopBorrowersRequest) returns (GetTopBorrowersResponse);
+  rpc GetUserReadingPace (GetUserReadingPaceRequest) returns (GetUserReadingPaceResponse);
+}

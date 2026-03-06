@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package library.inventory.v1;
+
+option csharp_namespace = "Library.Shared.Contracts.Inventory.V1";
+
+import "Protos/Inventory/inventory.message.proto";
+
+service InventoryService {
+  rpc GetMostBorrowedBooks (GetMostBorrowedBooksRequest) returns (GetMostBorrowedBooksResponse);
+}
+

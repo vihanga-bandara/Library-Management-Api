@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package library.recommendation.v1;
+
+option csharp_namespace = "Library.Shared.Contracts.Recommendation.V1";
+
+
+message GetOtherBorrowedBooksRequest {
+	string book_id = 1;
+}
+
+message GetOtherBorrowedBooksResponse {
+	repeated RecommendedBook recommended_books = 1;
+}
+
+message RecommendedBook {
+  string book_id = 1;
+  string title = 2;
+}

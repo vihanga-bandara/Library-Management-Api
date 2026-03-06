@@ -1,0 +1,19 @@
+
+syntax = "proto3";
+
+package library.inventory.v1;
+
+option csharp_namespace = "Library.Shared.Contracts.Inventory.V1";
+
+message GetMostBorrowedBooksRequest {
+	int32 limit = 1;
+}
+
+message GetMostBorrowedBooksResponse {
+	repeated BorrowedBook borrowed_books = 1;
+}
+
+message BorrowedBook {
+  string id = 1;
+  string title = 2;
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package library.recommendation.v1;
+
+option csharp_namespace = "Library.Shared.Contracts.Recommendation.V1";
+
+import "Protos/Recommendation/recommendation.message.proto";
+
+service RecommendationService {
+  rpc GetOtherBorrowedBooks (GetOtherBorrowedBooksRequest) returns (GetOtherBorrowedBooksResponse);
+}
+
