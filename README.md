@@ -1,2 +1,2 @@
-# Library-Management-Api
-GRPC based Library API in .NET with Clean Architecture
+# Library-API
+gRPC based Library API in .NET and Clean Architecture
