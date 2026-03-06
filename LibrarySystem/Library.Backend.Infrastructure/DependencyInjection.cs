@@ -4,6 +4,7 @@ using Library.Backend.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Library.Backend.Infrastructure;
 
@@ -14,7 +15,16 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("LibraryDb")
             ?? "Data Source=library.db";
 
-        services.AddDbContext<LibraryDbContext>(options => options.UseSqlite(connectionString));
+        services.AddDbContext<LibraryDbContext>(options =>
+        {
+            options.UseSqlite(connectionString);
+
+            // check query optimization - delete later
+            options.LogTo(Console.WriteLine, LogLevel.Information);
+            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors();
+        }
+        );
 
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IUserRepository, UserRepository>();

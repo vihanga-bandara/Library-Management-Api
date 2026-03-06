@@ -4,6 +4,6 @@ namespace Library.Backend.Application.Services
 {
     public interface IInventoryInsightsService
     {
-        Task<List<BorrowedBookDto>> GetMostBorrowedBooksAsync(int limit);
+        Task<List<BorrowedBooksDto>> GetMostBorrowedBooksAsync(int limit);
     }
 }

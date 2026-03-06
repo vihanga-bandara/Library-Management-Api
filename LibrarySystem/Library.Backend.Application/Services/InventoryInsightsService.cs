@@ -11,11 +11,9 @@ namespace Library.Backend.Application.Services
         {
             _analyticsRepo = analyticsRepo;
         }
-        public async Task<List<BorrowedBookDto>> GetMostBorrowedBooksAsync(int limit)
+        public async Task<List<BorrowedBooksDto>> GetMostBorrowedBooksAsync(int limit)
         {
-            var mostBorrowedBooks = await _analyticsRepo.GetMostBorrowedBooksAsync(limit);
-
-            return mostBorrowedBooks.Select(b => new BorrowedBookDto(b.Id, b.Title)).ToList();
+            return await _analyticsRepo.GetMostBorrowedBooksAsync(limit);
         }
     }
 }

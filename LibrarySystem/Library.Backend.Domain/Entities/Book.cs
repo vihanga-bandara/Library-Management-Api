@@ -7,4 +7,6 @@ public class Book
     public string Title { get; set; } = string.Empty;
 
     public int PageCount { get; set; }
+
+    public ICollection<LoanTransaction> LoanTransactions { get; set; } = new List<LoanTransaction>();
 }
