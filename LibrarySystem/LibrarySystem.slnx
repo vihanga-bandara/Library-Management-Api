@@ -9,4 +9,5 @@
   <Project Path="Library.Backend.Domain/Library.Backend.Domain.csproj" />
   <Project Path="Library.Backend.Infrastructure/Library.Backend.Infrastructure.csproj" />
   <Project Path="Library.Shared.Contracts/Library.Shared.Contracts.csproj" />
+  <Project Path="Library.Tests/Library.Tests.csproj" />
 </Solution>

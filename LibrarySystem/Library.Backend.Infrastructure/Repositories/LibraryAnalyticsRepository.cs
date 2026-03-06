@@ -98,9 +98,13 @@ namespace Library.Backend.Infrastructure.Repositories
                 return new List<BorrowedBooksDto>();
             }
 
-            return await _dbContext.LoanTransactions
+            var otherBorrowedBooks = await _dbContext.LoanTransactions
                 .AsNoTracking()
+                .Include(lt => lt.Book)
                 .Where(lt => usersWhoBorrowedThisBook.Contains(lt.UserId) && lt.BookId != bookId)
+                .ToListAsync();
+
+            return otherBorrowedBooks
                 .GroupBy(lt => new { lt.BookId, lt.Book!.Title })
                 .Select(g => new BorrowedBooksDto(
                     g.Key.BookId,
@@ -109,7 +113,7 @@ namespace Library.Backend.Infrastructure.Repositories
                 ))
                 .OrderByDescending(b => b.BookCount)
                 .Take(limit)
-                .ToListAsync();
+                .ToList();
         }
     }
 }
