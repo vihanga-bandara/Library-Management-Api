@@ -11,7 +11,6 @@
             var testDataEndRange = 100;
                
 
-            // question 1
             var question1Response = IsNumberPow2(testDataNum);
             Console.WriteLine(question1Response);
             var question2Response = ReverseString(testDataBookTitle);

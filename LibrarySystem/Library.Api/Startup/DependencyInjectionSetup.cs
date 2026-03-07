@@ -9,21 +9,21 @@ namespace Library.Api.Startup
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services,IConfiguration configuration)
         {
-            var grpcBackendUrl = configuration["GrpcSettings:BackendUrl"] ?? "http://localhost:5000";
+            var grpcBackendUrl = configuration["GrpcSettings:BackendUrl"];
 
             services.AddGrpcClient<InventoryService.InventoryServiceClient>(options =>
             {
-                options.Address = new Uri(grpcBackendUrl);
+                options.Address = new Uri(grpcBackendUrl!);
             });
 
             services.AddGrpcClient<UserActivityService.UserActivityServiceClient>(options =>
             {
-                options.Address = new Uri(grpcBackendUrl);
+                options.Address = new Uri(grpcBackendUrl!);
             });
 
             services.AddGrpcClient<RecommendationService.RecommendationServiceClient>(options =>
             {
-                options.Address = new Uri(grpcBackendUrl);
+                options.Address = new Uri(grpcBackendUrl!);
             });
 
             services.AddExceptionHandler<GlobalExceptionHandler>();
