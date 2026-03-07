@@ -16,4 +16,5 @@ message GetMostBorrowedBooksResponse {
 message BorrowedBook {
   string id = 1;
   string title = 2;
+  int32 book_count = 3;
 }

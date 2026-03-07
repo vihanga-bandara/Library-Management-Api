@@ -1,7 +1,6 @@
 <Solution>
   <Folder Name="/tests/">
-    <Project Path="tests/Library.Backend.Application.Tests/Library.Backend.Application.Tests.csproj" />
-    <Project Path="tests/Library.Backend.Infrastructure.Tests/Library.Backend.Infrastructure.Tests.csproj" />
+    <Project Path="Library.Tests/Library.Tests.csproj" />
   </Folder>
   <Project Path="Libary.Backend.Grpc/Libary.Backend.Grpc.csproj" Id="f14ac3c5-a515-454d-9c2f-b54f07446503" />
   <Project Path="Library.Api/Library.Api.csproj" />
@@ -9,5 +8,4 @@
   <Project Path="Library.Backend.Domain/Library.Backend.Domain.csproj" />
   <Project Path="Library.Backend.Infrastructure/Library.Backend.Infrastructure.csproj" />
   <Project Path="Library.Shared.Contracts/Library.Shared.Contracts.csproj" />
-  <Project Path="Library.Tests/Library.Tests.csproj" />
 </Solution>

@@ -17,27 +17,33 @@ namespace Library.Backend.Infrastructure.Repositories
         public async Task<List<BorrowedBooksDto>> GetMostBorrowedBooksAsync(int limit)
         {
             return await _dbContext.Books.AsNoTracking()
-                .Select(b => new BorrowedBooksDto(
-                    b.Id, b.Title, b.LoanTransactions.Count()
-                    ))
-                .Where(b => b.BookCount > 0)
-                .OrderByDescending(b => b.BookCount)
+                .Select(b => new
+                {
+                    b.Id,
+                    b.Title,
+                    Count = b.LoanTransactions.Count()
+                })
+                .Where(b => b.Count > 0)
+                .OrderByDescending(b => b.Count)
                 .Take(limit)
+                .Select(b => new BorrowedBooksDto(b.Id, b.Title, b.Count))
                 .ToListAsync();
         }
 
         public async Task<List<UserBorrowSummaryDto>> GetTopBorrowersAsync(DateTime startDate, DateTime endDate, int limit)
         {
             return await _dbContext.Users.AsNoTracking()
-                .Select(u => new UserBorrowSummaryDto(
+                .Select(u => new
+                {
                     u.Id,
                     u.Name,
-                    u.LoanTransactions
+                    Count = u.LoanTransactions
                         .Count(lt => lt.BorrowedAt >= startDate && lt.BorrowedAt <= endDate)
-                        ))
-                .Where(u => u.BorrowedCount > 0)
-                .OrderByDescending(u => u.BorrowedCount)
+                })
+                .Where(u => u.Count > 0)
+                .OrderByDescending(u => u.Count)
                 .Take(limit)
+                .Select(u => new UserBorrowSummaryDto(u.Id, u.Name, u.Count))
                 .ToListAsync();
         }
 

@@ -6,7 +6,7 @@ namespace Library.Tests.System;
 [Trait("Category", "E2E")]
 public class LibraryApiEndToEndTests
 {
-    private const string ApiBaseUrl = "http://localhost:5001";
+    private const string ApiBaseUrl = "http://localhost:5194";
 
     [Fact]
     public async Task GetMostBorrowedBooks_ShouldReturnSuccessStatusCode()

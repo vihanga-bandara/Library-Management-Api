@@ -37,6 +37,7 @@ namespace Libary.Backend.Grpc.Services
 
             if (readingPace == null)
             {
+                // can probably make this a bad request, depends on who is calling (to avoid exposing such data)
                 throw new RpcException(new Status(StatusCode.NotFound, $"User with ID {userId} not found"));
             }
 

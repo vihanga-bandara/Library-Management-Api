@@ -19,8 +19,8 @@ namespace Library.Api.Controllers
         {
             var response = await _grpcClient.GetTopBorrowersAsync(new GetTopBorrowersRequest
             {
-                StartDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(startDate),
-                EndDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(endDate),
+                StartDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTime.SpecifyKind(startDate, DateTimeKind.Utc)),
+                EndDate = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTime.SpecifyKind(endDate, DateTimeKind.Utc)),
                 Limit = limit
             });
 
@@ -30,6 +30,8 @@ namespace Library.Api.Controllers
         [HttpGet("reading-pace/{userId}")]
         public async Task<IActionResult> GetUserReadingPace(string userId, [FromQuery] string? bookId = null)
         {
+            if (string.IsNullOrEmpty(userId)) {  return BadRequest(); }
+
             var response = await _grpcClient.GetUserReadingPaceAsync(new GetUserReadingPaceRequest
             {
                 UserId = userId,

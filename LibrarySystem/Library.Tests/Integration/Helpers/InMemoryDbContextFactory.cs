@@ -43,7 +43,10 @@ public class InMemoryDbContextFactory
             new LoanTransaction { Id = Guid.NewGuid(), BookId = book3.Id, UserId = user2.Id, BorrowedAt = baseDate.AddDays(25), ReturnedAt = baseDate.AddDays(35) },
             // Charlie - only has unreturned books (for testing edge case)
             new LoanTransaction { Id = Guid.NewGuid(), BookId = book1.Id, UserId = user3.Id, BorrowedAt = baseDate.AddDays(30), ReturnedAt = null },
-            new LoanTransaction { Id = Guid.NewGuid(), BookId = book2.Id, UserId = user3.Id, BorrowedAt = baseDate.AddDays(20), ReturnedAt = null }
+            new LoanTransaction { Id = Guid.NewGuid(), BookId = book2.Id, UserId = user3.Id, BorrowedAt = baseDate.AddDays(20), ReturnedAt = null },
+            // Additional transactions for 2026 date range test
+            new LoanTransaction { Id = Guid.NewGuid(), BookId = book2.Id, UserId = user1.Id, BorrowedAt = new DateTime(2026, 1, 5), ReturnedAt = new DateTime(2026, 1, 15) },
+            new LoanTransaction { Id = Guid.NewGuid(), BookId = book3.Id, UserId = user2.Id, BorrowedAt = new DateTime(2026, 1, 10), ReturnedAt = new DateTime(2026, 1, 20) }
         );
 
         context.SaveChanges();

@@ -79,6 +79,21 @@ namespace Library.Backend.Infrastructure
                 });
             }
 
+            // Ensure first user has some returned books for testing
+            var firstUser = users[0];
+            for (int i = 0; i < 5; i++)
+            {
+                var randomBook = books[rand.Next(Math.Min(10, books.Count))];
+                dbContext.LoanTransactions.Add(new LoanTransaction
+                {
+                    Id = Guid.NewGuid(),
+                    BookId = randomBook.Id,
+                    UserId = firstUser.Id,
+                    BorrowedAt = DateTime.UtcNow.AddDays(-rand.Next(30, 90)),
+                    ReturnedAt = DateTime.UtcNow.AddDays(-rand.Next(1, 29))
+                });
+            }
+
             dbContext.SaveChanges();
         }
     }

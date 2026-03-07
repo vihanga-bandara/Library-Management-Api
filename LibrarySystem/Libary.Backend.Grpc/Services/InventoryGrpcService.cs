@@ -21,7 +21,8 @@ namespace Libary.Backend.Grpc.Services
             response.BorrowedBooks.AddRange(books.Select(b => new BorrowedBook
             {
                 Id = b.Id.ToString(),
-                Title = b.Title
+                Title = b.Title,
+                BookCount = b.BookCount,
             }));
 
             return response;

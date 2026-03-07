@@ -17,6 +17,8 @@ namespace Library.Api.Controllers
         [HttpGet("other-borrowed-books/{bookId}")]
         public async Task<IActionResult> GetOtherBorrowedBooks(string bookId)
         {
+            if (string.IsNullOrEmpty(bookId)) { return BadRequest(); }
+
             var response = await _grpcClient.GetOtherBorrowedBooksAsync(new GetOtherBorrowedBooksRequest
             {
                 BookId = bookId
