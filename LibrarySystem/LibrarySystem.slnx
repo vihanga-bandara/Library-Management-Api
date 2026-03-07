@@ -8,4 +8,5 @@
   <Project Path="Library.Backend.Grpc/Library.Backend.Grpc.csproj" />
   <Project Path="Library.Backend.Infrastructure/Library.Backend.Infrastructure.csproj" />
   <Project Path="Library.Shared.Contracts/Library.Shared.Contracts.csproj" />
+  <Project Path="Starters/Starters.csproj" Id="ee5a9b0a-5dbb-499a-b27c-18b315fd3e9e" />
 </Solution>

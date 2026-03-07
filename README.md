@@ -33,7 +33,8 @@ LibrarySystem/
 ├── Library.Backend.Infrastructure/ # Data Access
 ├── Library.Backend.Domain/        # Domain Entities
 ├── Library.Shared.Contracts/      # gRPC Contracts
-└── Library.Tests/                 # All Tests
+├── Library.Tests/                 # All Tests
+└── Starters/                      # Starters - Warm-up Tasks
 ```
 
 ## 📊 Technologies

@@ -28,7 +28,7 @@ namespace Library.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("reading-pace/{userId}")]
+        [HttpGet("reading-pace/{userId:guid}")]
         public async Task<IActionResult> GetUserReadingPace(string userId, [FromQuery] string? bookId = null)
         {
             if (string.IsNullOrEmpty(userId)) {  return BadRequest(); }

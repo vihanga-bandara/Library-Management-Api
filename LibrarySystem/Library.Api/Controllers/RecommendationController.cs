@@ -14,7 +14,7 @@ namespace Library.Api.Controllers
             _grpcClient = grpcClient;
         }
 
-        [HttpGet("other-borrowed-books/{bookId}")]
+        [HttpGet("other-borrowed-books/{bookId:guid}")]
         public async Task<IActionResult> GetOtherBorrowedBooks(string bookId)
         {
             if (string.IsNullOrEmpty(bookId)) { return BadRequest(); }
