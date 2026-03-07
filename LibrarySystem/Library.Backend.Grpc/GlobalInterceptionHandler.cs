@@ -1,7 +1,7 @@
 ﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 
-namespace Library.Backend.Grpc.Interceptors
+namespace Library.Backend.Grpc
 {
     public class GlobalExceptionInterceptor : Interceptor
     {

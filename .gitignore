@@ -419,3 +419,6 @@ FodyWeavers.xsd
 /LibrarySystem/Libary.Backend.Grpc/*.db
 /LibrarySystem/Libary.Backend.Grpc/*.db-shm
 /LibrarySystem/Libary.Backend.Grpc/*.db-wal
+/LibrarySystem/Library.Backend.Grpc/*.db
+/LibrarySystem/Library.Backend.Grpc/*.db-shm
+/LibrarySystem/Library.Backend.Grpc/*.db-wal

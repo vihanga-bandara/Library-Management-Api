@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Libary.Backend.Grpc.Services;
+using Library.Backend.Grpc.Services;
 using Library.Backend.Application.Models;
 using Library.Backend.Application.Services;
 using Library.Shared.Contracts.Recommendation.V1;

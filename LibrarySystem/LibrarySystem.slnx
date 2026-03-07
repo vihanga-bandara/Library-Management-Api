@@ -2,10 +2,10 @@
   <Folder Name="/tests/">
     <Project Path="Library.Tests/Library.Tests.csproj" />
   </Folder>
-  <Project Path="Libary.Backend.Grpc/Libary.Backend.Grpc.csproj" Id="f14ac3c5-a515-454d-9c2f-b54f07446503" />
   <Project Path="Library.Api/Library.Api.csproj" />
   <Project Path="Library.Backend.Application/Library.Backend.Application.csproj" />
   <Project Path="Library.Backend.Domain/Library.Backend.Domain.csproj" />
+  <Project Path="Library.Backend.Grpc/Library.Backend.Grpc.csproj" />
   <Project Path="Library.Backend.Infrastructure/Library.Backend.Infrastructure.csproj" />
   <Project Path="Library.Shared.Contracts/Library.Shared.Contracts.csproj" />
 </Solution>

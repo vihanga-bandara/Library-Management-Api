@@ -1,4 +1,5 @@
-﻿using Library.Shared.Contracts.UserActivity.V1;
+﻿using Library.Backend.Application.Constants;
+using Library.Shared.Contracts.UserActivity.V1;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Api.Controllers
@@ -15,7 +16,7 @@ namespace Library.Api.Controllers
         }
 
         [HttpGet("top-borrower")]
-        public async Task<IActionResult> GetTopBorrowers([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int limit = 10)
+        public async Task<IActionResult> GetTopBorrowers([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int limit = QueryConstants.DefaultLimit)
         {
             var response = await _grpcClient.GetTopBorrowersAsync(new GetTopBorrowersRequest
             {

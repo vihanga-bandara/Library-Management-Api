@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Grpc.Core;
-using Libary.Backend.Grpc.Services;
+using Library.Backend.Grpc.Services;
 using Library.Backend.Application.Models;
 using Library.Backend.Application.Services;
 using Library.Shared.Contracts.UserActivity.V1;

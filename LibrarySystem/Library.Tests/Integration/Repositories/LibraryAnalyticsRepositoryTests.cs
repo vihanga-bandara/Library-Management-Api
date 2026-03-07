@@ -79,7 +79,7 @@ public class LibraryAnalyticsRepositoryTests : IDisposable
         // Assert
         result.Should().NotBeNull();
         result!.UserId.Should().Be(user.Id);
-        result.pagesPerDay.Should().BeGreaterThan(0);
+        result.PagesPerDay.Should().BeGreaterThan(0);
     }
 
     [Fact]
@@ -93,7 +93,7 @@ public class LibraryAnalyticsRepositoryTests : IDisposable
 
         // Assert
         result.Should().NotBeNull();
-        result!.pagesPerDay.Should().Be(0);
+        result!.PagesPerDay.Should().Be(0);
     }
 
     [Fact]

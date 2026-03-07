@@ -10,7 +10,7 @@ namespace Library.Backend.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
     {
         var connectionString = configuration.GetConnectionString("LibraryDb")
             ?? "Data Source=library.db";
@@ -19,16 +19,15 @@ public static class DependencyInjection
         {
             options.UseSqlite(connectionString);
 
-            // check query optimization - delete later
-            options.LogTo(Console.WriteLine, LogLevel.Information);
-            options.EnableSensitiveDataLogging();
-            options.EnableDetailedErrors();
+            if (isDevelopment)
+            {
+                options.LogTo(Console.WriteLine, LogLevel.Information);
+                options.EnableSensitiveDataLogging();
+                options.EnableDetailedErrors();
+            }
         }
         );
 
-        services.AddScoped<IBookRepository, BookRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<ILoanTransactionRepository, LoanTransactionRepository>();
         services.AddScoped<ILibraryAnalyticsRepository, LibraryAnalyticsRepository>();
 
         return services;

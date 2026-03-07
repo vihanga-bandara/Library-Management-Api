@@ -1,4 +1,5 @@
-﻿using Library.Shared.Contracts.Inventory.V1;
+﻿using Library.Backend.Application.Constants;
+using Library.Shared.Contracts.Inventory.V1;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Api.Controllers
@@ -15,7 +16,7 @@ namespace Library.Api.Controllers
         }
 
         [HttpGet("most-borrowed-books")]
-        public async Task<IActionResult> GetMostBorrowedBooks([FromQuery] int limit = 10)
+        public async Task<IActionResult> GetMostBorrowedBooks([FromQuery] int limit = QueryConstants.DefaultLimit)
         {
             var response = await _grpcClient.GetMostBorrowedBooksAsync(new GetMostBorrowedBooksRequest
             {

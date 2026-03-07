@@ -23,9 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Library.Backend.Grpc\Library.Backend.Grpc.csproj" />
     <ProjectReference Include="..\Library.Backend.Infrastructure\Library.Backend.Infrastructure.csproj" />
     <ProjectReference Include="..\Library.Backend.Application\Library.Backend.Application.csproj" />
-    <ProjectReference Include="..\Libary.Backend.Grpc\Libary.Backend.Grpc.csproj" />
+    <ProjectReference Include="..\Library.Backend.Grpc\Library.Backend.Grpc.csproj" />
     <ProjectReference Include="..\Library.Api\Library.Api.csproj" />
   </ItemGroup>
 

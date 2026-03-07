@@ -1,4 +1,5 @@
-using Libary.Backend.Grpc.Services;
+using Library.Backend.Grpc;
+using Library.Backend.Grpc.Services;
 using Library.Backend.Application;
 using Library.Backend.Infrastructure;
 using Library.Backend.Infrastructure.Persistence;
@@ -6,10 +7,14 @@ using Library.Backend.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options =>
+{
+    options.Interceptors.Add<GlobalExceptionInterceptor>();
+});
+builder.Services.AddSingleton<GlobalExceptionInterceptor>();
 builder.Services
     .AddApplicationServices()
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration, builder.Environment.IsDevelopment());
 
 var app = builder.Build();
 

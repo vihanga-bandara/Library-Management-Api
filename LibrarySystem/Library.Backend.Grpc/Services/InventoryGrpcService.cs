@@ -3,7 +3,7 @@ using Grpc.Core;
 using Library.Backend.Application.Services;
 using Library.Shared.Contracts.Inventory.V1;
 
-namespace Libary.Backend.Grpc.Services
+namespace Library.Backend.Grpc.Services
 {
     public class InventoryGrpcService : InventoryService.InventoryServiceBase
     {

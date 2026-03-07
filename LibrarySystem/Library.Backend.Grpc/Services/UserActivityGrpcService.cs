@@ -3,7 +3,7 @@ using Library.Backend.Application.Services;
 using Library.Shared.Contracts.UserActivity.V1;
 using UserActivityProto = Library.Shared.Contracts.UserActivity.V1;
 
-namespace Libary.Backend.Grpc.Services
+namespace Library.Backend.Grpc.Services
 {
     public class UserActivityGrpcService : UserActivityProto.UserActivityService.UserActivityServiceBase
     {
@@ -45,7 +45,7 @@ namespace Libary.Backend.Grpc.Services
             {
                 UserId = readingPace.UserId.ToString(),
                 BookId = request.BookId,
-                PagesPerDay = (int)Math.Round(readingPace.pagesPerDay)
+                PagesPerDay = (int)Math.Round(readingPace.PagesPerDay)
             };
         }
     }

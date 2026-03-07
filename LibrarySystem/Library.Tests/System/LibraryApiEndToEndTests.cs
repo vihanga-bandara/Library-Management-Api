@@ -8,60 +8,46 @@ public class LibraryApiEndToEndTests
 {
     private const string ApiBaseUrl = "http://localhost:5194";
 
-    [Fact]
-    public async Task GetMostBorrowedBooks_ShouldReturnSuccessStatusCode()
-    {
-        // Arrange
-        using var client = new HttpClient { BaseAddress = new Uri(ApiBaseUrl) };
+    private const string E2ETestBookId = "b0000001-0000-0000-0000-000000000001";
+    private const string E2ETestUserId = "11111111-1111-1111-1111-111111111111";
 
-        // Act
+    [Fact]
+    public async Task MostBorrowedBooks_ShouldRespond()
+    {
+        using var client = new HttpClient { BaseAddress = new Uri(ApiBaseUrl) };
         var response = await client.GetAsync("/api/v1/InventoryInsights/most-borrowed-books?limit=5");
-
-        // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
-    public async Task GetTopBorrowers_ShouldReturnSuccessWithDateRange()
+    public async Task TopBorrowers_ShouldRespond()
     {
-        // Arrange
         using var client = new HttpClient { BaseAddress = new Uri(ApiBaseUrl) };
-        var startDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        var endDate = new DateTime(2024, 12, 31, 0, 0, 0, DateTimeKind.Utc);
-        var url = $"/api/v1/UserActivity/top-borrower?startDate={startDate:O}&endDate={endDate:O}&limit=5";
-
-        // Act
-        var response = await client.GetAsync(url);
-
-        // Assert
+        var response = await client.GetAsync("/api/v1/UserActivity/top-borrower?startDate=2024-01-01&endDate=2024-12-31&limit=5");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
-    public async Task GetUserReadingPace_ShouldHandleValidUserId()
+    public async Task UserReadingPace_WithSeededUser_ShouldRespond()
     {
-        // Arrange
         using var client = new HttpClient { BaseAddress = new Uri(ApiBaseUrl) };
-        var userId = Guid.Parse("11111111-1111-1111-1111-111111111111");
-
-        // Act
-        var response = await client.GetAsync($"/api/v1/UserActivity/reading-pace/{userId}");
-
-        // Assert
+        var response = await client.GetAsync($"/api/v1/UserActivity/reading-pace/{E2ETestUserId}");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
-    public async Task GetOtherBorrowedBooks_ShouldReturnSuccessStatusCode()
+    public async Task OtherBorrowedBooks_WithSeededBook_ShouldRespond()
     {
-        // Arrange
         using var client = new HttpClient { BaseAddress = new Uri(ApiBaseUrl) };
-        var bookId = Guid.Parse("b0000001-0000-0000-0000-000000000001");
+        var response = await client.GetAsync($"/api/v1/Recommendation/other-borrowed-books/{E2ETestBookId}");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
 
-        // Act
-        var response = await client.GetAsync($"/api/v1/Recommendation/other-borrowed-books/{bookId}");
-
-        // Assert
+    [Fact]
+    public async Task UserReadingPace_WithSeededUserAndBook_ShouldRespond()
+    {
+        using var client = new HttpClient { BaseAddress = new Uri(ApiBaseUrl) };
+        var response = await client.GetAsync($"/api/v1/UserActivity/reading-pace/{E2ETestUserId}?bookId={E2ETestBookId}");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }

@@ -1,7 +1,7 @@
 # Script to run API, gRPC server, and tests
 
 Write-Host "Starting gRPC server..." -ForegroundColor Green
-$grpcProcess = Start-Process -FilePath "dotnet" -ArgumentList "run --project Libary.Backend.Grpc" -PassThru -NoNewWindow
+$grpcProcess = Start-Process -FilePath "dotnet" -ArgumentList "run --project Library.Backend.Grpc" -PassThru -NoNewWindow
 
 Write-Host "Starting API..." -ForegroundColor Green
 $apiProcess = Start-Process -FilePath "dotnet" -ArgumentList "run --project Library.Api" -PassThru -NoNewWindow

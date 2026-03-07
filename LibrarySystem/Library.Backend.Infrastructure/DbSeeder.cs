@@ -64,6 +64,23 @@ namespace Library.Backend.Infrastructure
             }
             dbContext.Users.AddRange(users);
 
+            // Create specific books for E2E testing
+            var e2eTestBook = new Book
+            {
+                Id = SeedBookIds[0], // b0000001-0000-0000-0000-000000000001
+                Title = "E2E Test Book - Most Borrowed",
+                PageCount = 500
+            };
+
+            // Ensure this specific book exists (it should already from the loop above, but this guarantees it)
+            var existingE2eBook = books.FirstOrDefault(b => b.Id == SeedBookIds[0]);
+            if (existingE2eBook != null)
+            {
+                existingE2eBook.Title = "E2E Test Book - Most Borrowed";
+                existingE2eBook.PageCount = 500;
+            }
+
+            // Create loan transactions
             for (int i = 0; i < numberOfLoanTransactionsToCreate; i++)
             {
                 var randomBook = books[rand.Next(books.Count)];
@@ -91,6 +108,34 @@ namespace Library.Backend.Infrastructure
                     UserId = firstUser.Id,
                     BorrowedAt = DateTime.UtcNow.AddDays(-rand.Next(30, 90)),
                     ReturnedAt = DateTime.UtcNow.AddDays(-rand.Next(1, 29))
+                });
+            }
+
+            // Create specific data for E2E test consistency
+            // Ensure the first test book has multiple borrows to guarantee it shows in most-borrowed
+            for (int i = 0; i < 15; i++)
+            {
+                dbContext.LoanTransactions.Add(new LoanTransaction
+                {
+                    Id = Guid.NewGuid(),
+                    BookId = SeedBookIds[0], // E2E Test Book
+                    UserId = users[rand.Next(users.Count)].Id,
+                    BorrowedAt = DateTime.UtcNow.AddDays(-rand.Next(30, 180)),
+                    ReturnedAt = rand.Next(0, 2) == 0 ? null : DateTime.UtcNow.AddDays(-rand.Next(1, 15))
+                });
+            }
+
+            // Ensure first user (used in E2E tests) has borrowing activity in a recent date range
+            var now = DateTime.UtcNow;
+            for (int i = 0; i < 3; i++)
+            {
+                dbContext.LoanTransactions.Add(new LoanTransaction
+                {
+                    Id = Guid.NewGuid(),
+                    BookId = books[rand.Next(5, Math.Min(15, books.Count))].Id,
+                    UserId = SeedUserIds[0],
+                    BorrowedAt = new DateTime(2024, rand.Next(1, 13), rand.Next(1, 28), 0, 0, 0, DateTimeKind.Utc),
+                    ReturnedAt = null
                 });
             }
 
