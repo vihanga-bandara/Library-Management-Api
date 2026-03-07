@@ -19,9 +19,9 @@ public static class TestDbContextFactory
         var book2 = new Book { Id = Guid.NewGuid(), Title = "Book Two", PageCount = 200 };
         var book3 = new Book { Id = Guid.NewGuid(), Title = "Book Three", PageCount = 400 };
 
-        var user1 = new User { Id = Guid.NewGuid(), Name = "Alice" };
-        var user2 = new User { Id = Guid.NewGuid(), Name = "Bob" };
-        var user3 = new User { Id = Guid.NewGuid(), Name = "Charlie" };
+        var user1 = new User { Id = Guid.Parse("11111111-1111-1111-1111-111111111111"), Name = "Alice" };
+        var user2 = new User { Id = Guid.Parse("12111111-1111-1111-1111-111111111111"), Name = "Bob" };
+        var user3 = new User { Id = Guid.Parse("12311111-1111-1111-1111-111111111111"), Name = "Charlie" };
 
         context.Books.AddRange(book1, book2, book3);
         context.Users.AddRange(user1, user2, user3);

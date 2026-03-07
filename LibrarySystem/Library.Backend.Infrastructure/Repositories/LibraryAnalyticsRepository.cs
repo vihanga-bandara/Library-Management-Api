@@ -45,19 +45,8 @@ namespace Library.Backend.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<UserReadingPaceSummaryDto?> GetUserReadingPaceAsync(Guid userId, Guid? bookId)
+        public async Task<UserReadingPaceSummaryDto?> GetUserReadingPaceAsync(Guid userId, string name, Guid? bookId)
         {
-            var user = await _dbContext.Users
-                .AsNoTracking()
-                .Where(u => u.Id == userId)
-                .Select(u => new { u.Id, u.Name })
-                .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                return null;
-            }
-
             var query = _dbContext.LoanTransactions
                 .AsNoTracking()
                 .Where(lt => lt.UserId == userId && lt.ReturnedAt != null);
@@ -78,13 +67,13 @@ namespace Library.Backend.Infrastructure.Repositories
 
             if (readingData.Count == 0)
             {
-                return new UserReadingPaceSummaryDto(user.Id, user.Name, 0);
+                return new UserReadingPaceSummaryDto(userId, name, 0);
             }
 
             var averagePagesPerDay = readingData.Average(d =>
                 (double)d.PageCount / Math.Max((d.ReturnedAt - d.BorrowedAt).TotalDays, 1.0));
 
-            return new UserReadingPaceSummaryDto(user.Id, user.Name, averagePagesPerDay);
+            return new UserReadingPaceSummaryDto(userId, name, averagePagesPerDay);
         }
 
         public async Task<List<BorrowedBooksDto>> GetOtherBorrowedBooksAsync(Guid bookId, int limit)

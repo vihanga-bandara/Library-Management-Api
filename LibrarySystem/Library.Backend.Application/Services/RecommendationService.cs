@@ -12,9 +12,9 @@ namespace Library.Backend.Application.Services
             _analyticsRepo = analyticsRepo;
         }
 
-        public Task<List<BorrowedBooksDto>> GetOtherBorrowedBooksAsync(Guid bookId, int limit)
+        public async Task<List<BorrowedBooksDto>> GetOtherBorrowedBooksAsync(Guid bookId, int limit)
         {
-            return _analyticsRepo.GetOtherBorrowedBooksAsync(bookId, limit);
+            return await _analyticsRepo.GetOtherBorrowedBooksAsync(bookId, limit);
         }
     }
 }

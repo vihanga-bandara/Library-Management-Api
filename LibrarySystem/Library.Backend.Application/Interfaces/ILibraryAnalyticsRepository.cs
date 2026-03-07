@@ -6,7 +6,7 @@ namespace Library.Backend.Application.Interfaces
     {
         Task<List<BorrowedBooksDto>> GetMostBorrowedBooksAsync(int limit);
         Task<List<UserBorrowSummaryDto>> GetTopBorrowersAsync(DateTime startDate, DateTime endDate, int limit);
-        Task<UserReadingPaceSummaryDto?> GetUserReadingPaceAsync(Guid userId, Guid? bookId);
+        Task<UserReadingPaceSummaryDto?> GetUserReadingPaceAsync(Guid userId, string name, Guid? bookId);
         Task<List<BorrowedBooksDto>> GetOtherBorrowedBooksAsync(Guid bookId, int limit);
     }
 }

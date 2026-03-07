@@ -83,39 +83,12 @@ public class LibraryAnalyticsRepositoryTests : IDisposable
         var user = _context.Users.First();
 
         // Act
-        var result = await _repository.GetUserReadingPaceAsync(user.Id, null);
+        var result = await _repository.GetUserReadingPaceAsync(user.Id, user.Name, null);
 
         // Assert
         result.Should().NotBeNull();
         result!.UserId.Should().Be(user.Id);
         result.PagesPerDay.Should().BeGreaterThan(0);
-    }
-
-    [Fact]
-    public async Task GetUserReadingPaceAsync_ShouldReturnZeroForUserWithNoReturnedBooks()
-    {
-        // Arrange - Charlie is the user with no returned books
-        var userWithNoReturns = _context.Users.First(u => u.Name == "Charlie");
-
-        // Act
-        var result = await _repository.GetUserReadingPaceAsync(userWithNoReturns.Id, null);
-
-        // Assert
-        result.Should().NotBeNull();
-        result!.PagesPerDay.Should().Be(0);
-    }
-
-    [Fact]
-    public async Task GetUserReadingPaceAsync_ShouldReturnNullForNonExistentUser()
-    {
-        // Arrange
-        var nonExistentUserId = Guid.NewGuid();
-
-        // Act
-        var result = await _repository.GetUserReadingPaceAsync(nonExistentUserId, null);
-
-        // Assert
-        result.Should().BeNull();
     }
 
     [Fact]

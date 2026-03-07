@@ -28,6 +28,7 @@ public static class DependencyInjection
         );
 
         services.AddScoped<ILibraryAnalyticsRepository, LibraryAnalyticsRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

@@ -2,19 +2,22 @@ using FluentAssertions;
 using Library.Backend.Application.Interfaces;
 using Library.Backend.Application.Models;
 using Library.Backend.Application.Services;
+using Library.Backend.Domain.Entities;
 using Moq;
 
 namespace Library.Tests.Unit.Services;
 
 public class UserActivityServiceTests
 {
-    private readonly Mock<ILibraryAnalyticsRepository> _mockRepo;
+    private readonly Mock<ILibraryAnalyticsRepository> _mockLibAnalyticsRepo;
+    private readonly Mock<IUserRepository> _mockUserRepo;
     private readonly UserActivityService _service;
 
     public UserActivityServiceTests()
     {
-        _mockRepo = new Mock<ILibraryAnalyticsRepository>();
-        _service = new UserActivityService(_mockRepo.Object);
+        _mockLibAnalyticsRepo = new Mock<ILibraryAnalyticsRepository>();
+        _mockUserRepo = new Mock<IUserRepository>();
+        _service = new UserActivityService(_mockLibAnalyticsRepo.Object, _mockUserRepo.Object);
     }
 
     [Fact]
@@ -29,7 +32,7 @@ public class UserActivityServiceTests
             new(Guid.NewGuid(), "Test User", 5)
         };
 
-        _mockRepo.Setup(r => r.GetTopBorrowersAsync(startDate, endDate, limit))
+        _mockLibAnalyticsRepo.Setup(r => r.GetTopBorrowersAsync(startDate, endDate, limit))
             .ReturnsAsync(expectedResult);
 
         // Act
@@ -37,25 +40,30 @@ public class UserActivityServiceTests
 
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
-        _mockRepo.Verify(r => r.GetTopBorrowersAsync(startDate, endDate, limit), Times.Once);
+        _mockLibAnalyticsRepo.Verify(r => r.GetTopBorrowersAsync(startDate, endDate, limit), Times.Once);
     }
 
     [Fact]
     public async Task GetUserReadingPaceAsync_ShouldCallRepositoryWithCorrectParameters()
     {
         // Arrange
-        var userId = Guid.NewGuid();
-        var bookId = Guid.NewGuid();
-        var expectedResult = new UserReadingPaceSummaryDto(userId, "Test User", 42.5);
+        var user = new User { Id = Guid.NewGuid(), Name = "Test User" };
 
-        _mockRepo.Setup(r => r.GetUserReadingPaceAsync(userId, bookId))
+        var bookId = Guid.NewGuid();
+        var expectedResult = new UserReadingPaceSummaryDto(user.Id, user.Name, 42.5);
+
+        _mockUserRepo.Setup(r => r.GetUserById(user.Id))
+            .ReturnsAsync(user);
+
+        _mockLibAnalyticsRepo.Setup(r => r.GetUserReadingPaceAsync(user.Id, user.Name, bookId))
             .ReturnsAsync(expectedResult);
 
         // Act
-        var result = await _service.GetUserReadingPaceAsync(userId, bookId);
+        var result = await _service.GetUserReadingPaceAsync(user.Id, bookId);
 
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
-        _mockRepo.Verify(r => r.GetUserReadingPaceAsync(userId, bookId), Times.Once);
+        _mockUserRepo.Verify(r => r.GetUserById(user.Id), Times.Once);
+        _mockLibAnalyticsRepo.Verify(r => r.GetUserReadingPaceAsync(user.Id, user.Name, bookId), Times.Once);
     }
 }
