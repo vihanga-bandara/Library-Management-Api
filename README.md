@@ -21,7 +21,8 @@ Taskkill.exe /F /IM dotnet.exe /T
 dotnet test Library.Tests/Library.Tests.csproj --verbosity normal
 ```
 
-**Note:** E2E tests will fail with connection errors if services aren't running. This is expected behavior.
+**Note:** e2e tests will fail with connection errors if services aren't running. This is expected behavior.
+**Note:** All tests will fail with connection errors if services aren't running. This is expected behavior.
 
 ## 📁 Project Structure
 
@@ -43,7 +44,7 @@ LibrarySystem/
 - ASP.NET Core
 - gRPC
 - Entity Framework Core
-- SQLite
+- SQLServer
 - xUnit
 
 

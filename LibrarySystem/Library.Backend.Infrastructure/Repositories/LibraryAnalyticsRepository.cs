@@ -1,6 +1,5 @@
 ﻿using Library.Backend.Application.Interfaces;
 using Library.Backend.Application.Models;
-using Library.Backend.Domain.Entities;
 using Library.Backend.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,43 +13,42 @@ namespace Library.Backend.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
+
         public async Task<List<BorrowedBooksDto>> GetMostBorrowedBooksAsync(int limit)
         {
-            return await _dbContext.Books.AsNoTracking()
-                .Select(b => new
-                {
-                    b.Id,
-                    b.Title,
-                    Count = b.LoanTransactions.Count()
-                })
-                .Where(b => b.Count > 0)
-                .OrderByDescending(b => b.Count)
+            return await _dbContext.LoanTransactions
+                .AsNoTracking()
+                .GroupBy(lt => new { lt.BookId, lt.Book!.Title })
+                .OrderByDescending(g => g.Count())
                 .Take(limit)
-                .Select(b => new BorrowedBooksDto(b.Id, b.Title, b.Count))
+                .Select(g => new BorrowedBooksDto(
+                    g.Key.BookId,
+                    g.Key.Title,
+                    g.Count()
+                ))
                 .ToListAsync();
         }
 
         public async Task<List<UserBorrowSummaryDto>> GetTopBorrowersAsync(DateTime startDate, DateTime endDate, int limit)
         {
-            return await _dbContext.Users.AsNoTracking()
-                .Select(u => new
-                {
-                    u.Id,
-                    u.Name,
-                    Count = u.LoanTransactions
-                        .Count(lt => lt.BorrowedAt >= startDate && lt.BorrowedAt <= endDate)
-                })
-                .Where(u => u.Count > 0)
-                .OrderByDescending(u => u.Count)
+            return await _dbContext.LoanTransactions
+                .AsNoTracking()
+                .Where(lt => lt.BorrowedAt >= startDate && lt.BorrowedAt <= endDate)
+                .GroupBy(lt => new { lt.UserId, lt.User!.Name })
+                .OrderByDescending(g => g.Count())
                 .Take(limit)
-                .Select(u => new UserBorrowSummaryDto(u.Id, u.Name, u.Count))
+                .Select(g => new UserBorrowSummaryDto(
+                    g.Key.UserId,
+                    g.Key.Name,
+                    g.Count()
+                ))
                 .ToListAsync();
         }
 
         public async Task<UserReadingPaceSummaryDto?> GetUserReadingPaceAsync(Guid userId, Guid? bookId)
         {
-            // had to do it in repo due to Sqlite limitation and not having SQL functions support
-            var user = await _dbContext.Users.AsNoTracking()
+            var user = await _dbContext.Users
+                .AsNoTracking()
                 .Where(u => u.Id == userId)
                 .Select(u => new { u.Id, u.Name })
                 .FirstOrDefaultAsync();
@@ -78,48 +76,35 @@ namespace Library.Backend.Infrastructure.Repositories
                 })
                 .ToListAsync();
 
-            if (!readingData.Any())
+            if (readingData.Count == 0)
             {
                 return new UserReadingPaceSummaryDto(user.Id, user.Name, 0);
             }
 
-            var averagePagesPerDay = readingData.Average(data =>
-                (double)data.PageCount / Math.Max((data.ReturnedAt - data.BorrowedAt).TotalDays, 1.0)
-            );
+            var averagePagesPerDay = readingData.Average(d =>
+                (double)d.PageCount / Math.Max((d.ReturnedAt - d.BorrowedAt).TotalDays, 1.0));
 
             return new UserReadingPaceSummaryDto(user.Id, user.Name, averagePagesPerDay);
         }
 
         public async Task<List<BorrowedBooksDto>> GetOtherBorrowedBooksAsync(Guid bookId, int limit)
         {
-            var usersWhoBorrowedThisBook = await _dbContext.LoanTransactions
-                .AsNoTracking()
+            var usersWhoBorrowedBook = _dbContext.LoanTransactions
                 .Where(lt => lt.BookId == bookId)
-                .Select(lt => lt.UserId)
-                .Distinct()
-                .ToListAsync();
+                .Select(lt => lt.UserId);
 
-            if (!usersWhoBorrowedThisBook.Any())
-            {
-                return new List<BorrowedBooksDto>();
-            }
-
-            var otherBorrowedBooks = await _dbContext.LoanTransactions
+            return await _dbContext.LoanTransactions
                 .AsNoTracking()
-                .Include(lt => lt.Book)
-                .Where(lt => usersWhoBorrowedThisBook.Contains(lt.UserId) && lt.BookId != bookId)
-                .ToListAsync();
-
-            return otherBorrowedBooks
+                .Where(lt => usersWhoBorrowedBook.Contains(lt.UserId) && lt.BookId != bookId)
                 .GroupBy(lt => new { lt.BookId, lt.Book!.Title })
+                .OrderByDescending(g => g.Count())
+                .Take(limit)
                 .Select(g => new BorrowedBooksDto(
                     g.Key.BookId,
                     g.Key.Title,
                     g.Count()
                 ))
-                .OrderByDescending(b => b.BookCount)
-                .Take(limit)
-                .ToList();
+                .ToListAsync();
         }
     }
 }

@@ -12,12 +12,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
     {
-        var connectionString = configuration.GetConnectionString("LibraryDb")
-            ?? "Data Source=library.db";
+        var connectionString = configuration.GetConnectionString("LibraryDb");
 
         services.AddDbContext<LibraryDbContext>(options =>
         {
-            options.UseSqlite(connectionString);
+            options.UseSqlServer(connectionString);
 
             if (isDevelopment)
             {

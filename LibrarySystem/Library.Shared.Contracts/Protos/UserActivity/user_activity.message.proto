@@ -24,7 +24,7 @@ message GetUserReadingPaceRequest {
 message GetUserReadingPaceResponse {
   string user_id = 1;
   string book_id = 2;
-  int32 pages_per_day = 3;
+  double pages_per_day = 3;
 }
 
 message UserSummary {

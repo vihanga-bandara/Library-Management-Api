@@ -45,7 +45,7 @@ namespace Library.Backend.Grpc.Services
             {
                 UserId = readingPace.UserId.ToString(),
                 BookId = request.BookId,
-                PagesPerDay = (int)Math.Round(readingPace.PagesPerDay)
+                PagesPerDay = readingPace.PagesPerDay
             };
         }
     }

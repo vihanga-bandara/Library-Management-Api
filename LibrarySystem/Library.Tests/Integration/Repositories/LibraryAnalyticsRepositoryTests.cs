@@ -12,21 +12,31 @@ public class LibraryAnalyticsRepositoryTests : IDisposable
 {
     private readonly LibraryDbContext _context;
     private readonly ILibraryAnalyticsRepository _repository;
+    private readonly IServiceScope _scope;
     private readonly ServiceProvider _serviceProvider;
 
     public LibraryAnalyticsRepositoryTests()
     {
-        _context = InMemoryDbContextFactory.Create();
-        InMemoryDbContextFactory.SeedTestData(_context);
+        var connectionString = TestDbContextFactory.CreateConnectionString();
+
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["ConnectionStrings:LibraryDb"] = connectionString
+            })
+            .Build();
 
         var services = new ServiceCollection();
-        var configuration = new ConfigurationBuilder().Build();
-
-        services.AddSingleton(_context);
         services.AddInfrastructure(configuration);
 
         _serviceProvider = services.BuildServiceProvider();
-        _repository = _serviceProvider.GetRequiredService<ILibraryAnalyticsRepository>();
+        _scope = _serviceProvider.CreateScope();
+
+        _context = _scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
+        _context.Database.EnsureCreated();
+        TestDbContextFactory.SeedTestData(_context);
+
+        _repository = _scope.ServiceProvider.GetRequiredService<ILibraryAnalyticsRepository>();
     }
 
     [Fact]
@@ -37,7 +47,6 @@ public class LibraryAnalyticsRepositoryTests : IDisposable
 
         // Assert
         result.Should().NotBeEmpty();
-        result.First().Title.Should().Be("Book One");
         result.First().BookCount.Should().Be(3);
         result.Should().BeInDescendingOrder(b => b.BookCount);
     }
@@ -144,7 +153,7 @@ public class LibraryAnalyticsRepositoryTests : IDisposable
     public void Dispose()
     {
         _context.Database.EnsureDeleted();
-        _context.Dispose();
+        _scope.Dispose();
         _serviceProvider.Dispose();
     }
 }

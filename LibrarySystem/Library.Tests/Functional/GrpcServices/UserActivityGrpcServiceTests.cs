@@ -72,7 +72,7 @@ public class UserActivityGrpcServiceTests
 
         // Assert
         response.UserId.Should().Be(userId.ToString());
-        response.PagesPerDay.Should().Be(43);
+        response.PagesPerDay.Should().BeApproximately(42.7, 0.01);
     }
 
     [Fact]

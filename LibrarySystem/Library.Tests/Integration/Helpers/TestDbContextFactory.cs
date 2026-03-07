@@ -1,21 +1,16 @@
 using Library.Backend.Domain.Entities;
 using Library.Backend.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 namespace Library.Tests.Integration.Helpers;
 
-public class InMemoryDbContextFactory
+public static class TestDbContextFactory
 {
-    public static LibraryDbContext Create()
+    private const string ConnectionStringTemplate =
+        "Server=(localdb)\\mssqllocaldb;Database={0};Trusted_Connection=True;MultipleActiveResultSets=true";
+
+    public static string CreateConnectionString()
     {
-        var options = new DbContextOptionsBuilder<LibraryDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options;
-
-        var context = new LibraryDbContext(options);
-        context.Database.EnsureCreated();
-
-        return context;
+        return string.Format(ConnectionStringTemplate, $"Library_Tests_{Guid.NewGuid():N}");
     }
 
     public static void SeedTestData(LibraryDbContext context)
