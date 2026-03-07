@@ -8,8 +8,9 @@ A clean architecture library management system with REST API and gRPC communicat
 
 #### 1. Quick Start - Run Api + gRPC server + tests
 ```bash
-powershell -File cd LibrarySystem/run-tests.ps1
+powershell -File run-tests.ps1
 ```
+If above fails try running - Taskkill.exe /F /IM dotnet.exe /T and then re-running above script.
 
 ### Run All Tests
 ```bash
@@ -17,7 +18,6 @@ dotnet test Library.Tests/Library.Tests.csproj --verbosity normal
 ```
 
 **Note:** E2E tests will fail with connection errors if services aren't running. This is expected behavior.
-
 
 ## 📁 Project Structure
 
