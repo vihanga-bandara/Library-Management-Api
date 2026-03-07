@@ -10,7 +10,11 @@ A clean architecture library management system with REST API and gRPC communicat
 ```bash
 powershell -File run-tests.ps1
 ```
-If above fails try running - Taskkill.exe /F /IM dotnet.exe /T and then re-running above script.
+
+If above script fails try running the below script first and re-try (this will kill all processes with name "dotnet.exe")
+```bash
+Taskkill.exe /F /IM dotnet.exe /T
+```
 
 ### Run All Tests
 ```bash
