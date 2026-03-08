@@ -1,5 +1,4 @@
 using Grpc.Core;
-using Library.Backend.Application.Constants;
 using Library.Backend.Application.Services;
 using Library.Shared.Contracts.Recommendation.V1;
 using RecommendationProto = Library.Shared.Contracts.Recommendation.V1;
@@ -18,7 +17,7 @@ namespace Library.Backend.Grpc.Services
         public override async Task<GetOtherBorrowedBooksResponse> GetOtherBorrowedBooks(GetOtherBorrowedBooksRequest request, ServerCallContext context)
         {
             var bookId = Guid.Parse(request.BookId);
-            var recommendations = await _recommendationService.GetOtherBorrowedBooksAsync(bookId, QueryConstants.DefaultLimit);
+            var recommendations = await _recommendationService.GetOtherBorrowedBooksAsync(bookId, request.Limit);
 
             var response = new GetOtherBorrowedBooksResponse();
             response.RecommendedBooks.AddRange(recommendations.Select(book => new RecommendedBook

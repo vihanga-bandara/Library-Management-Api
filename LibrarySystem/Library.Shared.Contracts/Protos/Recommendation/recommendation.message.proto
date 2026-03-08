@@ -7,6 +7,7 @@ option csharp_namespace = "Library.Shared.Contracts.Recommendation.V1";
 
 message GetOtherBorrowedBooksRequest {
 	string book_id = 1;
+	int32 limit = 2;
 }
 
 message GetOtherBorrowedBooksResponse {

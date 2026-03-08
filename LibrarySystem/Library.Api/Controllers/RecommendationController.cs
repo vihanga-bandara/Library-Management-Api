@@ -1,3 +1,4 @@
+using Library.Api.Models;
 using Library.Shared.Contracts.Recommendation.V1;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +16,14 @@ namespace Library.Api.Controllers
         }
 
         [HttpGet("other-borrowed-books/{bookId:guid}")]
-        public async Task<IActionResult> GetOtherBorrowedBooks(string bookId)
+        public async Task<IActionResult> GetOtherBorrowedBooks(Guid bookId, [FromQuery] int limit = QueryConstants.DefaultLimit)
         {
-            if (string.IsNullOrEmpty(bookId)) { return BadRequest(); }
-
-            var response = await _grpcClient.GetOtherBorrowedBooksAsync(new GetOtherBorrowedBooksRequest
-            {
-                BookId = bookId
-            });
+            var response = await _grpcClient.GetOtherBorrowedBooksAsync(
+                new GetOtherBorrowedBooksRequest
+                {
+                    BookId = bookId.ToString(),
+                    Limit = limit
+                });
 
             return Ok(response);
         }

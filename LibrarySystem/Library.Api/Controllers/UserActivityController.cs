@@ -1,4 +1,4 @@
-﻿using Library.Backend.Application.Constants;
+﻿using Library.Api.Models;
 using Library.Shared.Contracts.UserActivity.V1;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,13 +29,11 @@ namespace Library.Api.Controllers
         }
 
         [HttpGet("reading-pace/{userId:guid}")]
-        public async Task<IActionResult> GetUserReadingPace(string userId, [FromQuery] string? bookId = null)
+        public async Task<IActionResult> GetUserReadingPace(Guid userId, [FromQuery] string? bookId = null)
         {
-            if (string.IsNullOrEmpty(userId)) {  return BadRequest(); }
-
             var response = await _grpcClient.GetUserReadingPaceAsync(new GetUserReadingPaceRequest
             {
-                UserId = userId,
+                UserId = userId.ToString(),
                 BookId = bookId ?? string.Empty
             });
 

@@ -1,4 +1,4 @@
-﻿using Library.Backend.Application.Constants;
+﻿using Library.Api.Models;
 using Library.Shared.Contracts.Inventory.V1;
 using Microsoft.AspNetCore.Mvc;
 
