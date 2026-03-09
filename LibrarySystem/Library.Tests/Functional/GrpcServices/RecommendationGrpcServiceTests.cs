@@ -3,7 +3,6 @@ using Library.Backend.Grpc.Services;
 using Library.Backend.Application.Models;
 using Library.Backend.Application.Services;
 using Library.Shared.Contracts.Recommendation.V1;
-using Library.Tests.Functional.GrpcServices;
 using Moq;
 
 namespace Library.Tests.Functional.GrpcServices;
@@ -31,7 +30,7 @@ public class RecommendationGrpcServiceTests
             new(recommendedBookId, "Recommended Book", 5)
         };
 
-        _mockService.Setup(s => s.GetOtherBorrowedBooksAsync(bookId, 10))
+        _mockService.Setup(s => s.GetOtherBorrowedBooksAsync(bookId, It.IsAny<int>()))
             .ReturnsAsync(recommendations);
 
         // Act

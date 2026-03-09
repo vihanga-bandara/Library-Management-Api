@@ -3,7 +3,6 @@ using Library.Backend.Application.Models;
 using Library.Backend.Application.Services;
 using Library.Backend.Grpc.Services;
 using Library.Shared.Contracts.Inventory.V1;
-using Library.Tests.Functional.GrpcServices;
 using Moq;
 
 namespace Library.Tests.Functional.GrpcServices;

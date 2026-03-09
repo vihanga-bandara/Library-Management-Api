@@ -19,13 +19,9 @@ namespace Library.Backend.Infrastructure.Repositories
             return await _dbContext.LoanTransactions
                 .AsNoTracking()
                 .GroupBy(lt => new { lt.BookId, lt.Book!.Title })
-                .OrderByDescending(g => g.Count())
+                .OrderByDescending(group => group.Count())
                 .Take(limit)
-                .Select(g => new BorrowedBooksDto(
-                    g.Key.BookId,
-                    g.Key.Title,
-                    g.Count()
-                ))
+                .Select(group => new BorrowedBooksDto(group.Key.BookId, group.Key.Title, group.Count()))
                 .ToListAsync();
         }
 
@@ -35,13 +31,9 @@ namespace Library.Backend.Infrastructure.Repositories
                 .AsNoTracking()
                 .Where(lt => lt.BorrowedAt >= startDate && lt.BorrowedAt <= endDate)
                 .GroupBy(lt => new { lt.UserId, lt.User!.Name })
-                .OrderByDescending(g => g.Count())
+                .OrderByDescending(group => group.Count())
                 .Take(limit)
-                .Select(g => new UserBorrowSummaryDto(
-                    g.Key.UserId,
-                    g.Key.Name,
-                    g.Count()
-                ))
+                .Select(group => new UserBorrowSummaryDto(group.Key.UserId, group.Key.Name, group.Count()))
                 .ToListAsync();
         }
 
@@ -57,21 +49,24 @@ namespace Library.Backend.Infrastructure.Repositories
             }
 
             var readingData = await query
-                .Select(lt => new
+                .GroupBy(lt => lt.UserId)
+                .Select(g => new
                 {
-                    lt.BorrowedAt,
-                    ReturnedAt = lt.ReturnedAt!.Value,
-                    lt.Book!.PageCount
+                    TotalPages = g.Sum(lt => lt.Book!.PageCount),
+                    TotalDays = g.Sum(lt =>
+                    EF.Functions.DateDiffDay(lt.BorrowedAt, lt.ReturnedAt!.Value) < 1
+                    ? 1
+                    : EF.Functions.DateDiffDay(lt.BorrowedAt, lt.ReturnedAt!.Value)
+                   )
                 })
-                .ToListAsync();
+                .FirstOrDefaultAsync();
 
-            if (readingData.Count == 0)
+            if (readingData == null)
             {
                 return new UserReadingPaceSummaryDto(userId, name, 0);
             }
 
-            var averagePagesPerDay = readingData.Average(d =>
-                (double)d.PageCount / Math.Max((d.ReturnedAt - d.BorrowedAt).TotalDays, 1.0));
+            var averagePagesPerDay = (double)readingData.TotalPages / readingData.TotalDays;
 
             return new UserReadingPaceSummaryDto(userId, name, averagePagesPerDay);
         }
