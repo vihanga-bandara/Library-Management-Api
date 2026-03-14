@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Start API and gRPC",
+    "Projects": [
+      {
+        "Path": "Library.Api\\Library.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Library.Backend.Grpc\\Library.Backend.Grpc.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
